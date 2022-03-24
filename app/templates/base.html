@@ -1,6 +1,6 @@
 {% extends 'bootstrap/base.html' %}
-
 {% block title %}
+{% block html_attribs %} lang="en"{% endblock %}
     {% if title %}{{ title }} - Microblog{% else %}{{ _('Welcome to Microblog') }}{% endif %}
 {% endblock %}
 
