@@ -1,13 +1,14 @@
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms.validators import ValidationError, DataRequired, Length, Email
 from flask_babel import _, lazy_gettext as _l
 from app.models import User
 
 
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
+    email = StringField(_l('Email'), validators=[DataRequired(), Email()])
     about_me = TextAreaField(_l('About me'),
                              validators=[Length(min=0, max=140)])
     submit = SubmitField(_l('Submit'))
@@ -21,6 +22,10 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
                 raise ValidationError(_('Please use a different username.'))
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None and user.email != email.data:
+            raise ValidationError(_('Please use a different email address.'))
 
 
 class EmptyForm(FlaskForm):

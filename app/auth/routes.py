@@ -21,11 +21,19 @@ def login():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash(_('Invalid username or password'))
+        username = User.query.filter_by(username=form.username.data).first()
+        email = User.query.filter_by(email=form.username.data).first()
+        foundUser = None
+
+        if username is not None:
+            foundUser = username
+        if email is not None:
+            foundUser = email
+
+        if foundUser is None or not foundUser.check_password(form.password.data):
+            flash(_('Invalid username/email or password'))
             return redirect(url_for('auth.login'))
-        login_user(user, remember=form.remember_me.data)
+        login_user(foundUser, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.index')
