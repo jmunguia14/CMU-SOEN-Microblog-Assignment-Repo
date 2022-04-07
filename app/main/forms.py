@@ -6,6 +6,7 @@ from wtforms.validators import ValidationError, DataRequired, Length, Email
 from flask_babel import _, lazy_gettext as _l
 from app.models import User
 
+import re
 
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
@@ -27,6 +28,10 @@ class EditProfileForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None and user.email != email.data:
             raise ValidationError(_('Please use a different email address.'))
+
+        regex = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'
+        if not re.match(regex, self.email.data):
+            raise ValidationError(_('Please enter a correct email'))
 
 
 class EmptyForm(FlaskForm):
