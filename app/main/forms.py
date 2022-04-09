@@ -10,7 +10,7 @@ import re
 
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
-    email = EmailField('Email', validators=[DataRequired(), Email('Please enter a valid email')])
+    email = EmailField('Email', validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'),
                              validators=[Length(min=0, max=140)])
     submit = SubmitField(_l('Submit'))
