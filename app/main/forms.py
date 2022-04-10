@@ -31,7 +31,7 @@ class EditProfileForm(FlaskForm):
 
         regex = r'\b([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})\b'
         if not re.match(regex, self.email.data):
-            raise ValidationError(_('Please enter a correct email'))
+            raise ValidationError(_('Please format your email address correctly.'))
 
 
 class EmptyForm(FlaskForm):
